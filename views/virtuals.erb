@@ -1,0 +1,20 @@
+<div class="panel-group" id="accordion">
+	<% @virtuals.each do |name,dest| %>
+		<div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	      	<span class="glyphicon glyphicon-chevron-down"></span>
+	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" 
+	        				href="#<%= Pathname.new(dest.address).basename.to_s.tr(".", "_") %>_<%= dest.port %>">
+	    		  <%= Pathname.new(name).basename %> (<%= Pathname.new(dest.address).basename %>:<%= dest.port %>)
+	    		</a>
+	    	</h4>
+	    </div>
+	    <div id="<%= Pathname.new(dest.address).basename.to_s.tr(".", "_") %>_<%= dest.port %>" class="panel-collapse collapse">
+	      <div class="panel-body">
+	      	DATA DATA DATA
+	      </div>
+	    </div>
+		</div>
+	<% end %>
+</div>

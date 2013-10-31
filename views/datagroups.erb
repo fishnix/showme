@@ -1,0 +1,28 @@
+<% @datagroups.each do |dg,v| %>
+  <div class="row">
+		<div class="col-md-4">
+	    <span class="glyphicon glyphicon-list-alt"></span>
+	    <%= Pathname.new(dg.name).basename %>
+	  </div>
+	  <div class="col-md-8">
+	  	<% case @type
+	  			 when "address" %>
+	  			 	<div class="well">
+		  				<% dg.members.each do |m| %>
+		  					<%= m.address %>/<%= m.netmask %><br />
+		  				<% end %>
+	  				</div>
+	  		<% when "string" %>
+	  			<div class="well">
+	  				<% i = 0 %>
+	  				<% dg.members.each do |m| %>
+	  					<%= m %> { <%= h v[i] %> }<br />
+	  					<% i+=1 %>
+	  				<% end %>
+	  			</div>
+	  		<% when "value" %>
+		  		<pre><%= datagroup.members %></pre>
+		  <% end %>
+	  </div>
+	</div>
+<% end %>

@@ -1,0 +1,3 @@
+mgmt_host:  127.0.0.1:443
+mgmt_user:  readonly
+mgmt_pass:  xxxxxxxx

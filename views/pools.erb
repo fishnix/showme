@@ -1,0 +1,24 @@
+<div class="panel-group" id="accordion">
+	<% @pools.each do |name,active| %>
+		<div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	      	<% if active > 0 %>
+	      		<span class="glyphicon glyphicon-check"></span>
+	   		<% else %>
+	      		<span class="glyphicon glyphicon-exclamation-sign"></span>
+	    	<% end %>
+	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" 
+	        				href="#<%=  Pathname.new(name).basename %>">
+	    		  <%=  Pathname.new(name).basename %>
+	    		</a>
+	    	</h4>
+	    </div>
+	    <div id="<%=  Pathname.new(name).basename %>" class="panel-collapse collapse">
+	      <div class="panel-body">
+	      	DATA DATA DATA
+	      </div>
+	    </div>
+		</div>
+	<% end %>
+</div>

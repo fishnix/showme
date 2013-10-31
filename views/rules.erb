@@ -1,0 +1,11 @@
+<% @rules.each do |rule| %>
+  <div class="row">
+		<div class="col-md-4">
+	    <span class="glyphicon glyphicon-wrench"></span>
+	    <%= Pathname.new(rule.rule_name).basename %>
+	  </div>
+	  <div class="col-md-8">
+	  		<pre><%= h rule.rule_definition %></pre>
+	  </div>
+	</div>
+<% end %>
