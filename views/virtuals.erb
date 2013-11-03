@@ -1,18 +1,39 @@
 <div class="panel-group" id="accordion">
-	<% @virtuals.each do |name,dest| %>
+	<% @virtuals.each do |v| %>
 		<div class="panel panel-default">
 	    <div class="panel-heading">
 	      <h4 class="panel-title">
 	      	<span class="glyphicon glyphicon-chevron-down"></span>
 	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" 
-	        				href="#<%= Pathname.new(dest.address).basename.to_s.tr(".", "_") %>_<%= dest.port %>">
-	    		  <%= Pathname.new(name).basename %> (<%= Pathname.new(dest.address).basename %>:<%= dest.port %>)
+	        				href="#<%= Pathname.new(v[:destination].address).basename.to_s.tr(".", "_") %>_<%= v[:destination].port %>">
+	    		  <%= Pathname.new(v[:name]).basename %> (<%= Pathname.new(v[:destination].address).basename %>:<%= v[:destination].port %>)
 	    		</a>
 	    	</h4>
 	    </div>
-	    <div id="<%= Pathname.new(dest.address).basename.to_s.tr(".", "_") %>_<%= dest.port %>" class="panel-collapse collapse">
+	    <div id="<%= Pathname.new(v[:destination].address).basename.to_s.tr(".", "_") %>_<%= v[:destination].port %>" class="panel-collapse collapse">
 	      <div class="panel-body">
-	      	DATA DATA DATA
+					<ul>
+			  		<li><%= v[:status].status_description %></li>
+			  		<li>Pool: <a href="/pool/<%= Pathname.new(v[:pool]).basename.to_s.tr(".", "_") %>"><%= Pathname.new(v[:pool]).basename.to_s.tr(".", "_") %></a></li>
+   		      <li>Persistence:
+			  			<% v[:persist].each do |p|  %>
+			  				<%= Pathname.new(p.profile_name).basename.to_s.tr(".", "_") %>
+							<% end %>
+						</li>
+			  		<li>Fallback Persistence: <%= Pathname.new(v[:fbpersist]).basename.to_s.tr(".", "_") %></li>
+			  		<li>Rules:</li>
+							<ul>
+								<% v[:rules].each do |r| %>
+									<li><%= Pathname.new(r.rule_name).basename.to_s.tr(".", "_") %></li>
+								<% end %>
+							</ul>
+			  		<li>Profiles:</li>
+			  			<ul>
+								<% v[:profile].each do |p| %>
+									<li><%= Pathname.new(p.profile_name).basename.to_s.tr(".", "_") %> { context <%= p.profile_context %> }</li>
+								<% end %>
+							</ul>
+						</ul>
 	      </div>
 	    </div>
 		</div>

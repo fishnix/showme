@@ -121,12 +121,33 @@ end
 def virtuals
   bigip = get_bigip_ifaces('LocalLB.VirtualServer')
 
-  virtuals = bigip['LocalLB.VirtualServer'].get_list.sort
-  virtual_destinations = bigip['LocalLB.VirtualServer'].get_destination_v2(virtuals)
-
-  virtual_def_pools = bigip['LocalLB.VirtualServer'].get_default_pool_name(virtuals)
-
-  Hash[virtuals.zip virtual_destinations]
+  virtuals      = bigip['LocalLB.VirtualServer'].get_list.sort
+  dests         = bigip['LocalLB.VirtualServer'].get_destination_v2(virtuals)
+  enabled       = bigip['LocalLB.VirtualServer'].get_enabled_state(virtuals)
+  status        = bigip['LocalLB.VirtualServer'].get_object_status(virtuals)
+  pools         = bigip['LocalLB.VirtualServer'].get_default_pool_name(virtuals)
+  persists      = bigip['LocalLB.VirtualServer'].get_persistence_profile(virtuals)
+  fbpersists    = bigip['LocalLB.VirtualServer'].get_fallback_persistence_profile(virtuals)
+  rules         = bigip['LocalLB.VirtualServer'].get_rule(virtuals)
+  profile       = bigip['LocalLB.VirtualServer'].get_profile(virtuals)
+    
+  arr = Array.new
+  virtuals.zip(enabled, status, dests, pools, persists, fbpersists, rules, profile) do |a,b,c,d,e,f,g,h,i|
+    virt = Hash.new
+    virt[:name]        = a
+    virt[:enabled]     = b
+    virt[:status]      = c
+    virt[:destination] = d
+    virt[:pool]        = e
+    virt[:persist]     = f
+    virt[:fbpersist]   = g
+    virt[:rules]       = h
+    virt[:profile]     = i
+    arr << virt
+  end
+  
+  arr
+  #Hash[virtuals.zip [virtual_dests, virtual_enabled, virtual_pools] ]
 end
 
 def rules
