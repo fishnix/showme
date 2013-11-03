@@ -24,7 +24,7 @@
 			  		<li>Rules:</li>
 							<ul>
 								<% v[:rules].each do |r| %>
-									<li><%= Pathname.new(r.rule_name).basename.to_s.tr(".", "_") %></li>
+									<li><a href="/rule/<%= Pathname.new(r.rule_name).basename.to_s.tr(".", "_")%>"><%= Pathname.new(r.rule_name).basename.to_s.tr(".", "_") %></a></li>
 								<% end %>
 							</ul>
 			  		<li>Profiles:</li>

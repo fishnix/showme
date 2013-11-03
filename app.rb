@@ -2,6 +2,7 @@ require 'sinatra'
 require 'f5-icontrol'
 require 'date'
 require 'sinatra/config_file'
+require 'sinatra/multi_route'
 require 'dalli'
 require 'rack-cache'
 require 'pathname'
@@ -58,11 +59,12 @@ get "/virtuals" do
   erb :virtuals
 end
 
-get "/rules" do
+
+get '/rules', '/rule/:rule_name' do 
   cache_control :public, max_age: 1800  # 30 mins.
 
-  @heading = "iRules"
-  @rules = rules
+  @heading = params[:rule_name] ? params[:rule_name] : "iRules"
+  @rules = params[:rule_name] ? rules([params[:rule_name]]) : rules
 
   erb :rules
 end
@@ -146,14 +148,14 @@ def virtuals
     arr << virt
   end
   
+  # Return array of virtuals
   arr
-  #Hash[virtuals.zip [virtual_dests, virtual_enabled, virtual_pools] ]
 end
 
-def rules
+def rules(rules = nil)
   bigip = get_bigip_ifaces('LocalLB.Rule')
 
-  rules = bigip['LocalLB.Rule'].get_list.sort
+  rules ||= bigip['LocalLB.Rule'].get_list.sort
 
   bigip['LocalLB.Rule'].query_rule(rules)
 end
